@@ -1,0 +1,45 @@
+# Node modules
+node_modules/
+client/node_modules/
+server/node_modules/
+social-media-backend/node_modules/
+
+# Build output
+dist/
+build/
+client/build/
+server/build/
+social-media-backend/dist/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment files
+.env
+.env.*
+client/.env
+server/.env
+social-media-backend/.env
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+
+# Misc
+coverage/
+*.tgz
+
+# TypeScript
+*.tsbuildinfo
+
+# S3/Secrets
+*.pem
+*.key
+*.crt 
