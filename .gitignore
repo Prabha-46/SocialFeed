@@ -20,6 +20,7 @@ yarn-error.log*
 # Environment files
 .env
 .env.*
+!*.env.example
 client/.env
 server/.env
 social-media-backend/.env
