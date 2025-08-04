@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   ThumbsUp,
   ThumbsDown,
@@ -33,6 +33,19 @@ const PostCard: React.FC<PostCardProps> = ({
   const [showMenu, setShowMenu] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+  const [isTruncated, setIsTruncated] = useState(false);
+  const descRef = useRef<HTMLParagraphElement>(null);
+
+  useEffect(() => {
+    if (descRef.current) {
+      const lineHeight = parseFloat(
+        getComputedStyle(descRef.current).lineHeight
+      );
+      const maxHeight = lineHeight * 3;
+      setIsTruncated(descRef.current.scrollHeight > maxHeight + 1);
+    }
+  }, [post.description]);
 
   const handleLike = () => {
     if (isProfileView) return;
@@ -112,14 +125,38 @@ const PostCard: React.FC<PostCardProps> = ({
         <img
           src={post.imageUrl}
           alt={post.title}
-          className="w-full h-80 object-cover"
+          className="w-full object-cover"
         />
       </div>
 
       {/* Post Content */}
       <div className="p-4">
         <h2 className="text-lg font-bold text-gray-900 mb-2">{post.title}</h2>
-        <p className="text-gray-700 mb-4 leading-relaxed">{post.description}</p>
+        <p
+          ref={descRef}
+          className={`text-gray-700 mb-4 leading-relaxed overflow-hidden ${
+            !expanded ? "line-clamp-3" : ""
+          }`}
+          style={{ wordBreak: "break-word" }}
+        >
+          {post.description}
+        </p>
+        {isTruncated && !expanded && (
+          <button
+            className="text-blue-500 hover:underline mb-4"
+            onClick={() => setExpanded(true)}
+          >
+            See more
+          </button>
+        )}
+        {isTruncated && expanded && (
+          <button
+            className="text-blue-500 hover:underline mb-4"
+            onClick={() => setExpanded(false)}
+          >
+            See less
+          </button>
+        )}
 
         {/* Like/Dislike Section */}
         {showActions && (
